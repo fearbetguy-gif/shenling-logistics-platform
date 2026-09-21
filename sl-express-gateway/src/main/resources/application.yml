@@ -7,17 +7,39 @@ spring:
   cloud:
     nacos:
       discovery:
-        enabled: false
+        enabled: ${NACOS_ENABLED:true}
+        register-enabled: ${NACOS_REGISTER_ENABLED:true}
         server-addr: ${NACOS_ADDR:127.0.0.1:8848}
+        group: ${NACOS_GROUP:DEFAULT_GROUP}
     gateway:
+      globalcors:
+        add-to-simple-url-handler-mapping: true
+        cors-configurations:
+          '[/**]':
+            allowedOriginPatterns: "*"
+            allowedMethods: "*"
+            allowedHeaders: "*"
+            allowCredentials: false
       discovery:
         locator:
           enabled: false
       routes:
+        - id: sl-express-user-ping
+          uri: ${USER_SERVICE_URL:http://127.0.0.1:8081}
+          predicates:
+            - Path=/api/user/internal/ping
+          filters:
+            - StripPrefix=2
         - id: sl-express-user
           uri: ${USER_SERVICE_URL:http://127.0.0.1:8081}
           predicates:
             - Path=/api/user/**
+          filters:
+            - StripPrefix=1
+        - id: sl-express-order-ping
+          uri: ${ORDER_SERVICE_URL:http://127.0.0.1:8082}
+          predicates:
+            - Path=/api/order/internal/ping
           filters:
             - StripPrefix=2
         - id: sl-express-order
@@ -25,10 +47,20 @@ spring:
           predicates:
             - Path=/api/order/**
           filters:
+            - StripPrefix=1
+        - id: sl-express-transport-ping
+          uri: ${TRANSPORT_SERVICE_URL:http://127.0.0.1:8083}
+          predicates:
+            - Path=/api/transport/internal/ping
+          filters:
             - StripPrefix=2
         - id: sl-express-transport
           uri: ${TRANSPORT_SERVICE_URL:http://127.0.0.1:8083}
           predicates:
             - Path=/api/transport/**
           filters:
-            - StripPrefix=2
+            - StripPrefix=1
+
+app:
+  jwt:
+    secret: ${JWT_SECRET:shenling-logistics-demo-secret-key-please-change-in-production}

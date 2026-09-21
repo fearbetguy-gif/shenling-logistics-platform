@@ -4,9 +4,24 @@ server:
 spring:
   application:
     name: sl-express-user
+  datasource:
+    url: ${USER_DB_URL:jdbc:mysql://127.0.0.1:3307/shenling_logistics?useUnicode=true&characterEncoding=utf8&serverTimezone=Asia/Shanghai&useSSL=false}
+    username: ${USER_DB_USERNAME:root}
+    password: ${USER_DB_PASSWORD:change_me}
+    driver-class-name: com.mysql.cj.jdbc.Driver
   cloud:
     nacos:
       discovery:
-        enabled: false
+        enabled: ${NACOS_ENABLED:true}
+        register-enabled: ${NACOS_REGISTER_ENABLED:true}
         server-addr: ${NACOS_ADDR:127.0.0.1:8848}
+        group: ${NACOS_GROUP:DEFAULT_GROUP}
+mybatis-plus:
+  mapper-locations: classpath:/mapper/**/*.xml
+  configuration:
+    map-underscore-to-camel-case: true
 
+app:
+  jwt:
+    secret: ${JWT_SECRET:shenling-logistics-demo-secret-key-please-change-in-production}
+    expire-seconds: ${JWT_EXPIRE_SECONDS:7200}

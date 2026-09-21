@@ -6,6 +6,6 @@ target/
 .settings/
 .vscode/
 logs/
+.agents/
 *.log
 .DS_Store
-

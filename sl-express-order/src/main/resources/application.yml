@@ -4,9 +4,30 @@ server:
 spring:
   application:
     name: sl-express-order
+  datasource:
+    url: ${ORDER_DB_URL:jdbc:mysql://127.0.0.1:3307/shenling_logistics?useUnicode=true&characterEncoding=utf8&serverTimezone=Asia/Shanghai&useSSL=false}
+    username: ${ORDER_DB_USERNAME:root}
+    password: ${ORDER_DB_PASSWORD:}
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  data:
+    redis:
+      host: ${REDIS_HOST:127.0.0.1}
+      port: ${REDIS_PORT:6379}
+      password: ${REDIS_PASSWORD:}
+      database: ${REDIS_DATABASE:0}
+  rabbitmq:
+    host: ${RABBITMQ_HOST:127.0.0.1}
+    port: ${RABBITMQ_PORT:5672}
+    username: ${RABBITMQ_USERNAME:guest}
+    password: ${RABBITMQ_PASSWORD:guest}
   cloud:
     nacos:
       discovery:
-        enabled: false
+        enabled: ${NACOS_ENABLED:true}
+        register-enabled: ${NACOS_REGISTER_ENABLED:true}
         server-addr: ${NACOS_ADDR:127.0.0.1:8848}
+        group: ${NACOS_GROUP:DEFAULT_GROUP}
 
+mybatis-plus:
+  configuration:
+    map-underscore-to-camel-case: true
