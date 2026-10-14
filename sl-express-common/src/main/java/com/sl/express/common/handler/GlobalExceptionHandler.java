@@ -7,12 +7,16 @@ import jakarta.validation.ConstraintViolationException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * 统一转换业务异常、参数校验异常和未知异常，避免 Controller 重复写 try-catch。
  */
 @RestControllerAdvice
 public class GlobalExceptionHandler {
+
+    private static final Logger log = LoggerFactory.getLogger(GlobalExceptionHandler.class);
 
     @ExceptionHandler(BusinessException.class)
     public Result<Void> handleBusinessException(BusinessException exception) {
@@ -26,6 +30,8 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(Exception.class)
     public Result<Void> handleException(Exception exception) {
+        // 对外隐藏堆栈，对内保留完整日志，便于定位真实生产问题。
+        log.error("未处理的系统异常", exception);
         return Result.failure(ResultCode.SYSTEM_ERROR);
     }
 }

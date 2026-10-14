@@ -34,14 +34,14 @@ docker compose ps
 
 - Nacos：http://127.0.0.1:8848/nacos
 - RabbitMQ：http://127.0.0.1:15672，账号 `guest`，密码 `guest`
-- MySQL：`127.0.0.1:3307`，数据库 `shenling_logistics`
+- MySQL：`127.0.0.1:3307`，数据库 `wuliu`
 - Redis：`127.0.0.1:6379`
 
 MySQL 初始化脚本会按文件名顺序执行 `docs/sql` 下的 SQL。已有 MySQL 数据卷时，新增 SQL 不会自动重复执行，可手动导入：
 
 ```bash
 MYSQL_PWD=root mysql --protocol=tcp -h127.0.0.1 -P3307 -uroot \\
-  < docs/sql/004_transport_track.sql
+  < docs/sql/006_route.sql
 ```
 
 ## 编译
@@ -61,7 +61,7 @@ ORDER_DB_PASSWORD=root java -jar sl-express-order/target/sl-express-order-1.0.0-
 TRANSPORT_DB_PASSWORD=root java -jar sl-express-transport/target/sl-express-transport-1.0.0-SNAPSHOT.jar
 ```
 
-端口依次为：Gateway `8080`、User `8081`、Order `8082`、Transport `8083`。
+端口依次为：Gateway `8090`、User `8081`、Order `8082`、Transport `8083`。
 
 ## 核心演示流程
 
@@ -71,7 +71,7 @@ TRANSPORT_DB_PASSWORD=root java -jar sl-express-transport/target/sl-express-tran
 4. RabbitMQ 发布 `order.created` 事件
 5. Transport 消费事件并创建 `WAIT_ASSIGN` 运输任务
 6. 快递员领取任务
-7. 依次更新 `PICKING_UP`、`IN_TRANSIT`、`DELIVERING`、`SIGNED`
+7. 依次更新运输任务状态 `PICKING_UP`、`IN_TRANSIT`、`DELIVERING`、`SIGNED`；订单服务中的对应状态为 `PICKED_UP`、`TRANSPORTING`、`DELIVERING`、`SIGNED`
 8. 查询订单详情和物流轨迹
 
 主要接口：
@@ -84,6 +84,7 @@ POST /api/order/{orderNo}/cancel
 POST /api/transport/tasks/{orderNo}/claim
 POST /api/transport/tasks/{orderNo}/status
 GET  /api/transport/tasks/{orderNo}/tracks
+GET  /api/transport/routes/shortest?start=WAREHOUSE&end=CUSTOMER
 ```
 
 ## 关键设计
@@ -96,6 +97,8 @@ GET  /api/transport/tasks/{orderNo}/tracks
 - Feign 状态同步失败后写入补偿表，每 30 秒自动重试，最多 10 次。
 - 运输状态使用枚举限制非法跳转。
 - OpenFeign 同步运输状态到订单服务，并配置调用超时。
+- 路线规划从 `route_node`、`route_edge` 读取有向图，使用 Dijkstra 求最短路径；示例数据返回 `38.000 km`。
+- 配送异常助手由后端负责权限校验、订单事实整理和规则判断，Dify/DeepSeek 只负责把结构化事实生成自然语言建议。
 
 ## 面试重点
 

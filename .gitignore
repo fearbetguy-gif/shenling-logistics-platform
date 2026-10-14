@@ -9,3 +9,5 @@ logs/
 .agents/
 *.log
 .DS_Store
+sl-express-web/node_modules/
+sl-express-web/dist/

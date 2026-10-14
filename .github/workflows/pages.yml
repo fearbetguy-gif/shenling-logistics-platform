@@ -27,10 +27,14 @@ jobs:
       - name: Configure Pages
         uses: actions/configure-pages@v5
 
+      - name: Build Vue frontend
+        working-directory: ./sl-express-web
+        run: npm ci && npm run build
+
       - name: Upload frontend artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: ./sl-express-web
+          path: ./sl-express-web/dist
 
       - name: Deploy to GitHub Pages
         id: deployment

@@ -5,7 +5,7 @@ spring:
   application:
     name: sl-express-user
   datasource:
-    url: ${USER_DB_URL:jdbc:mysql://127.0.0.1:3307/shenling_logistics?useUnicode=true&characterEncoding=utf8&serverTimezone=Asia/Shanghai&useSSL=false}
+    url: ${USER_DB_URL:jdbc:mysql://127.0.0.1:3307/wuliu?useUnicode=true&characterEncoding=utf8&serverTimezone=Asia/Shanghai&useSSL=false&allowPublicKeyRetrieval=true}
     username: ${USER_DB_USERNAME:root}
     password: ${USER_DB_PASSWORD:change_me}
     driver-class-name: com.mysql.cj.jdbc.Driver

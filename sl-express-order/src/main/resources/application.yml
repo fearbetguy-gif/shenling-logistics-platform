@@ -5,7 +5,7 @@ spring:
   application:
     name: sl-express-order
   datasource:
-    url: ${ORDER_DB_URL:jdbc:mysql://127.0.0.1:3307/shenling_logistics?useUnicode=true&characterEncoding=utf8&serverTimezone=Asia/Shanghai&useSSL=false}
+    url: ${ORDER_DB_URL:jdbc:mysql://127.0.0.1:3307/wuliu?useUnicode=true&characterEncoding=utf8&serverTimezone=Asia/Shanghai&useSSL=false&allowPublicKeyRetrieval=true}
     username: ${ORDER_DB_USERNAME:root}
     password: ${ORDER_DB_PASSWORD:}
     driver-class-name: com.mysql.cj.jdbc.Driver
@@ -31,3 +31,11 @@ spring:
 mybatis-plus:
   configuration:
     map-underscore-to-camel-case: true
+
+assistant:
+  ai:
+    enabled: ${ASSISTANT_AI_ENABLED:false}
+    provider: ${ASSISTANT_AI_PROVIDER:openai-compatible}
+    base-url: ${ASSISTANT_AI_BASE_URL:https://api.openai.com/v1}
+    model: ${ASSISTANT_AI_MODEL:填写你的模型名称}
+    api-key: ${ASSISTANT_AI_API_KEY:}

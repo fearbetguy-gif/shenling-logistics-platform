@@ -17,7 +17,6 @@
     <packaging>pom</packaging>
 
     <name>sl-express</name>
-    <description>神领物流——微服务物流管理平台</description>
 
     <modules>
         <module>sl-express-common</module>

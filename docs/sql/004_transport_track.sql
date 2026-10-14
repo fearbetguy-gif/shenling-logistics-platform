@@ -1,4 +1,4 @@
-USE shenling_logistics;
+USE wuliu;
 
 CREATE TABLE IF NOT EXISTS transport_track (
     id BIGINT PRIMARY KEY AUTO_INCREMENT COMMENT '主键',

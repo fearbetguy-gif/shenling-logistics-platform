@@ -1,4 +1,4 @@
-USE shenling_logistics;
+USE wuliu;
 
 CREATE TABLE IF NOT EXISTS order_status_sync_retry (
     id BIGINT PRIMARY KEY AUTO_INCREMENT COMMENT '主键',
