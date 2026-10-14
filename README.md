@@ -1,6 +1,6 @@
-# 神领物流——微服务物流管理平台
+# 智达同城仓配平台
 
-一个适合 Java 后端求职展示的精简物流系统，重点体现微服务、Redis、RabbitMQ、MySQL、JWT 和异常处理。
+面向同城配送场景的精简微服务物流系统，覆盖订单、运输任务、物流轨迹和配送异常助手等核心业务。
 
 ## 技术栈
 
@@ -100,6 +100,7 @@ GET  /api/transport/routes/shortest?start=WAREHOUSE&end=CUSTOMER
 - 路线规划从 `route_node`、`route_edge` 读取有向图，使用 Dijkstra 求最短路径；示例数据返回 `38.000 km`。
 - 配送异常助手由后端负责权限校验、订单事实整理和规则判断，Dify/DeepSeek 只负责把结构化事实生成自然语言建议。
 
-## 面试重点
+## 技术文档
 
-可以重点说明：缓存一致性、Lua 原子性、消息重复消费、数据库唯一索引、状态机、Gateway 鉴权、Feign 超时与服务降级、全局异常处理和 Docker 化部署。
+- [Dify 配送异常助手接入说明](docs/dify-integration.md)
+- [数据库初始化脚本](docs/sql/)

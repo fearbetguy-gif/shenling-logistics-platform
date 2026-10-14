@@ -27,7 +27,7 @@ import java.util.concurrent.ThreadLocalRandom;
 public class OrderQueryServiceImpl implements OrderQueryService {
 
     private static final Logger log = LoggerFactory.getLogger(OrderQueryServiceImpl.class);
-    private static final String ORDER_CACHE_KEY_PREFIX = "sl:order:detail:";
+    private static final String ORDER_CACHE_KEY_PREFIX = "zd:order:detail:";
 
     private final OrderInfoMapper orderInfoMapper;
     private final StringRedisTemplate stringRedisTemplate;
@@ -57,7 +57,7 @@ public class OrderQueryServiceImpl implements OrderQueryService {
 
     @Override
     public OrderSummaryVO create(Long userId, String requestId, OrderCreateRequest request) {
-        String idempotentKey = "sl:order:create:idempotent:" + userId + ":" + requestId;
+        String idempotentKey = "zd:order:create:idempotent:" + userId + ":" + requestId;
         Long acquired = stringRedisTemplate.execute(orderCreateIdempotentScript,
                 java.util.List.of(idempotentKey), requestId, "30");
         if (!Long.valueOf(1L).equals(acquired)) {
@@ -168,6 +168,6 @@ public class OrderQueryServiceImpl implements OrderQueryService {
 
     private String generateOrderNo(LocalDateTime now) {
         int suffix = ThreadLocalRandom.current().nextInt(1000, 10000);
-        return "SL" + now.format(DateTimeFormatter.ofPattern("yyyyMMddHHmmss")) + suffix;
+        return "ZD" + now.format(DateTimeFormatter.ofPattern("yyyyMMddHHmmss")) + suffix;
     }
 }

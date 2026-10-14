@@ -28,7 +28,7 @@ class TransportTaskServiceImplTest {
         OrderServiceClient orderClient = mock(OrderServiceClient.class);
         OrderStatusSyncRetryMapper retryMapper = mock(OrderStatusSyncRetryMapper.class);
         TransportTaskService service = new TransportTaskServiceImpl(taskMapper, recordMapper, trackMapper, orderClient, retryMapper);
-        OrderCreatedEvent event = new OrderCreatedEvent("SL202609210001", 1L,
+        OrderCreatedEvent event = new OrderCreatedEvent("ZD202609210001", 1L,
                 "杭州", "上海", LocalDateTime.now());
 
         service.createFromOrderEvent(event);
@@ -48,7 +48,7 @@ class TransportTaskServiceImplTest {
         OrderServiceClient orderClient = mock(OrderServiceClient.class);
         OrderStatusSyncRetryMapper retryMapper = mock(OrderStatusSyncRetryMapper.class);
         TransportTaskService service = new TransportTaskServiceImpl(taskMapper, recordMapper, trackMapper, orderClient, retryMapper);
-        OrderCreatedEvent event = new OrderCreatedEvent("SL202609210001", 1L,
+        OrderCreatedEvent event = new OrderCreatedEvent("ZD202609210001", 1L,
                 "杭州", "上海", LocalDateTime.now());
 
         assertDoesNotThrow(() -> service.createFromOrderEvent(event));

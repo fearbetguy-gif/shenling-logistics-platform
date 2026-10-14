@@ -63,4 +63,4 @@ spring:
 
 app:
   jwt:
-    secret: ${JWT_SECRET:shenling-logistics-demo-secret-key-please-change-in-production}
+    secret: ${JWT_SECRET:zhida-logistics-demo-secret-key-please-change-in-production}

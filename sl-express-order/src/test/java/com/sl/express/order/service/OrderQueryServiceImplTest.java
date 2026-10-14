@@ -34,7 +34,7 @@ class OrderQueryServiceImplTest {
                 "陈默", "13800138000", "杭州西湖区",
                 "林晓", "13900139000", "上海浦东新区", "文件"));
 
-        assertThat(result.orderNo()).startsWith("SL");
+        assertThat(result.orderNo()).startsWith("ZD");
         assertThat(result.status()).isEqualTo("WAIT_PICKUP");
         verify(mapper).insert(any(OrderInfo.class));
     }
@@ -44,7 +44,7 @@ class OrderQueryServiceImplTest {
         OrderInfo order = new OrderInfo();
         order.setId(1L);
         order.setUserId(7L);
-        order.setOrderNo("SL202609210002");
+        order.setOrderNo("ZD202609210002");
         order.setStatus("WAIT_PICKUP");
         OrderInfoMapper mapper = mock(OrderInfoMapper.class);
         when(mapper.selectOne(any())).thenReturn(order);
@@ -56,14 +56,14 @@ class OrderQueryServiceImplTest {
 
         assertThat(result.status()).isEqualTo("CANCELLED");
         verify(mapper).updateById(order);
-        verify(redisTemplate).delete("sl:order:detail:7:SL202609210002");
+        verify(redisTemplate).delete("zd:order:detail:7:ZD202609210002");
     }
 
     @Test
     void shouldRejectCancelAfterPickup() {
         OrderInfo order = new OrderInfo();
         order.setUserId(7L);
-        order.setOrderNo("SL202609210003");
+        order.setOrderNo("ZD202609210003");
         order.setStatus("PICKED_UP");
         OrderInfoMapper mapper = mock(OrderInfoMapper.class);
         when(mapper.selectOne(any())).thenReturn(order);
